@@ -51,9 +51,6 @@ func handleClientRequest(conn net.Conn) {
 		return
 	}
 
-	log.Println(hostPort)
-	log.Println(hostPort.Host)
-
 	if hostPort.Opaque == "443" {
 		address = hostPort.Scheme + ":443"
 	} else {
