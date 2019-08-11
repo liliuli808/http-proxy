@@ -5,12 +5,12 @@ import (
 	"fmt"
 	"io"
 	"log"
-"net"
+	"net"
 	"net/url"
 	"strings"
 )
 
-func main()  {
+func main() {
 	l, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		log.Panic(err)
@@ -28,20 +28,21 @@ func main()  {
 
 func handleClientRequest(conn net.Conn) {
 	if conn == nil {
+		log.Println("no client")
 		return
 	}
 	defer conn.Close()
 
 	var b [1024]byte
 
-	n , err := conn.Read(b[:])
+	n, err := conn.Read(b[:])
 
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	var method  , host , address string
-	fmt.Sscanf(string(b[:bytes.IndexByte(b[:], '\n')]),"%s%s",&method,&host)
+	var method, host, address string
+	fmt.Sscanf(string(b[:bytes.IndexByte(b[:], '\n')]), "%s%s", &method, &host)
 
 	hostPort, err := url.Parse(host)
 
@@ -53,14 +54,14 @@ func handleClientRequest(conn net.Conn) {
 	if hostPort.Opaque == "443" {
 		address = hostPort.Scheme + ":443"
 	} else {
-		if strings.Index(hostPort.Host,":") == -1  {
+		if strings.Index(hostPort.Host, ":") == -1 {
 			address = hostPort.Host + "80"
 		} else {
 			address = hostPort.Host
 		}
 	}
 
-	server ,err := net.Dial("tcp",address)
+	server, err := net.Dial("tcp", address)
 
 	if err != nil {
 		log.Println(err)
