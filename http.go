@@ -11,7 +11,7 @@ import (
 )
 
 func main() {
-	l, err := net.Listen("tcp", ":8080")
+	l, err := net.Listen("tcp", ":8820")
 	if err != nil {
 		log.Panic(err)
 	}
@@ -48,19 +48,17 @@ func handleClientRequest(conn net.Conn) {
 
 	if err != nil {
 		log.Println(err)
-		log.Println(method)
-		log.Println(host)
 		return
 	}
 
 	log.Println(hostPort)
-	log.Println(hostPort.Scheme)
 	log.Println(hostPort.Host)
+
 	if hostPort.Opaque == "443" {
 		address = hostPort.Scheme + ":443"
 	} else {
 		if strings.Index(hostPort.Host, ":") == -1 {
-			address = hostPort.Host + "80"
+			address = hostPort.Host + ":80"
 		} else {
 			address = hostPort.Host
 		}
@@ -70,6 +68,7 @@ func handleClientRequest(conn net.Conn) {
 
 	if err != nil {
 		log.Println(err)
+		log.Println(hostPort.Host)
 		return
 	}
 
