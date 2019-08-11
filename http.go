@@ -48,9 +48,14 @@ func handleClientRequest(conn net.Conn) {
 
 	if err != nil {
 		log.Println(err)
+		log.Println(method)
+		log.Println(host)
 		return
 	}
 
+	log.Println(hostPort)
+	log.Println(hostPort.Scheme)
+	log.Println(hostPort.Host)
 	if hostPort.Opaque == "443" {
 		address = hostPort.Scheme + ":443"
 	} else {
